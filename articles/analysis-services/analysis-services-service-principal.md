@@ -50,17 +50,15 @@ In the following example, appID and a password are used to perform a model datab
 ```powershell
 Param (
 
-        [Parameter(Mandatory=$true)] [String] $AppId,
+        [Parameter(Mandatory=$true)] [String] $ApplicationId,
         [Parameter(Mandatory=$true)] [String] $PlainPWord,
         [Parameter(Mandatory=$true)] [String] $TenantId
        )
 $PWord = ConvertTo-SecureString -String $PlainPWord -AsPlainText -Force
 
-$Credential = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $AppId, $PWord
+$Credential = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $ApplicationId, $PWord
 
-Add-AzAnalysisServicesAccount -Credential $Credential -ServicePrincipal -TenantId $TenantId -RolloutEnvironment "westcentralus.asazure.windows.net"
-
-Invoke-ProcessTable -Server "asazure://westcentralus.asazure.windows.net/myserver" -TableName "MyTable" -Database "MyDb" -RefreshType "Full"
+Invoke-ProcessTable -Server "asazure://westcentralus.asazure.windows.net/myserver" -TableName "MyTable" -Database "MyDb" -RefreshType "Full" -ServicePrincipal -ApplicationId $ApplicationId -TenantId $TenantId -Credential $Credential
 ```
 
 ### AMO and ADOMD 
